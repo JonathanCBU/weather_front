@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar"
+import Forecast from "./components/Forecast";
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -54,7 +55,7 @@ const App = () => {
       )}
 
       {weather && weather.data && weather.data.condition && (
-        <p>Data is good!</p>
+        <Forecast weather={weather} />
       )}
     </div>
   );
