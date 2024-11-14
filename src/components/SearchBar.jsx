@@ -1,5 +1,5 @@
 import React from "react";
-import searchIcon from "../assets/search.png";
+import "./style/SearchBar.css"
 
 const SearchBar = ({ query, setQuery, search }) => {
   const handleKeyPress = (event) => {
@@ -18,7 +18,6 @@ const SearchBar = ({ query, setQuery, search }) => {
         onChange={(event) => setQuery(event.target.value)}
         onKeyDown={handleKeyPress}
       />
-      <img src={searchIcon} onClick={search} />
     </div>
   );
 };

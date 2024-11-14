@@ -77,25 +77,29 @@ const Forecast = ({ weather }) => {
                 </button>
               </div>
               <div className="Air">
-                <img src={wind}></img>
-                <p>{forecast.current.wind_speed}kph</p>
-                <img src={humidity}></img>
-                <p>{forecast.current.humidity}%</p>
+                <div className="air-col">
+                  <img src={wind}></img>
+                  <p>{forecast.current.wind_speed}kph</p>
+                </div>
+                <div className="air-col">
+                  <img src={humidity}></img>
+                  <p>{forecast.current.humidity}%</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="Future">
-            <h3>The Next 5 Days:</h3>
-            <div className="forecast-container">
-              {forecast.daily.slice(0, 5).map((day) => (
-                <div className="day" key={day.dt}>
-                  <p>{day.dt}</p>
-                  <img src={icon_codes[day.weather[0].icon]}></img>
-                  <p>
-                    H: {day.temp.max}°C L: {day.temp.min}°C
-                  </p>
-                </div>
-              ))}
+            <div className="Future">
+              <h3>The Next 5 Days:</h3>
+              <div className="forecast-container">
+                {forecast.daily.slice(0, 5).map((day) => (
+                  <div className="day" key={day.dt}>
+                    <p>{day.dt}</p>
+                    <img src={icon_codes[day.weather[0].icon]}></img>
+                    <p>
+                      H: {day.temp.max}°C L: {day.temp.min}°C
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

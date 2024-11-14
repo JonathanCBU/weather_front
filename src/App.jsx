@@ -5,7 +5,7 @@ import SearchBar from "./components/SearchBar";
 import Forecast from "./components/Forecast";
 
 const App = () => {
-  const [query, setQuery] = useState("New York");
+  const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({
     loading: true,
     data: {},
@@ -16,7 +16,7 @@ const App = () => {
     event.preventDefault();
     if (
       event.type === "click" ||
-      (event.type === "keypress" && event.key === "Enter")
+      (event.type === "keydown" && event.key === "Enter")
     ) {
       setWeather({ ...weather, loading: true });
       const url = `http://127.0.0.1:8080/weather/${query}`;
