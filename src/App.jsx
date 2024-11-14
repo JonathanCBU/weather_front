@@ -1,47 +1,62 @@
 import React, { useRef } from "react";
-import Today from "./components/Today";
-import Weather from "./components/Weather";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import SearchBar from "./components/SearchBar"
 
-const Search = () => {
-  const inputRef = useRef();
+const App = () => {
+  const [query, setQuery] = useState("");
+  const [weather, setWeather] = useState({
+    loading: true,
+    data: {},
+    error: false,
+  });
 
-  const [currentData, setCurrentData] = useState(false);
-  const [forecastData, setForecastData] = useState(false);
+  const search = async (event) => {
+    event.preventDefault();
+    if (
+      event.type === "click" ||
+      (event.type === "keypress" && event.key === "Enter")
+    ) {
+      setWeather({ ...weather, loading: true });
+      const url = `http://127.0.0.1:8080/weather/${query}`;
 
-  const fetchApi = async (location) => {
-    try {
-      console.log(location);
-      const url = `http://127.0.0.1:8080/weather/${location}`;
-      const response = await axios.get(url);
-      console.log(response.data);
-      setCurrentData(response.data.current);
-      setForecastData(response.data.forcast);
-    } catch (error) {
-      console.log(error);
+      try {
+        const response = await axios.get(url);
+        console.log(response.data);
+        setWeather({ data: response.data, loading: false, error: false });
+      } catch (error) {
+        setWeather({ ...weather, data: {}, loading: false, error: true });
+        console.log("error", error);
+      }
     }
   };
 
-  useEffect(() => {
-    fetchApi("Boston");
-  }, []);
-
-  return (
-    <div className="search">
-      <form onSubmit={() => fetchApi(inputRef.current.value)}>
-        <input type="text" placeholder="city or zip" ref={inputRef} />
-      </form>
-    </div>
-  );
-};
-
-const App = () => {
   return (
     <div className="app">
-      <Weather />
+      <SearchBar query={query} setQuery={setQuery} search={search} />
+
+      {weather.loading && (
+        <>
+          <br />
+          <br />
+          <h4>Searching...</h4>
+        </>
+      )}
+
+      {weather.error && (
+        <>
+          <br />
+          <br />
+          <span className="error-message">
+            <span>Sorry, no result found. Please Try again</span>
+          </span>
+        </>
+      )}
+
+      {weather && weather.data && weather.data.condition && (
+        <p>Data is good!</p>
+      )}
     </div>
   );
 };
-
 export default App;
