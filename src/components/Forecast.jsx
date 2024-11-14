@@ -12,7 +12,6 @@ const Forecast = ({ weather }) => {
   const data = { weather };
   const [location, setLocation] = useState(weather.data.location);
   const [forecast, setForecast] = useState(weather.data.forecast);
-  const [weatherData, setWeatherData] = useState([]);
   const [isMetric, setIsMetric] = useState(true);
 
   const icon_codes = {
@@ -49,6 +48,43 @@ const Forecast = ({ weather }) => {
   useEffect(() => {
     updateForecast();
   }, [data]);
+
+  const formatDay = (dateString) => {
+    const options = { weekday: "short" };
+    const date = new Date(dateString * 1000);
+    return date.toLocaleDateString("en-US", options);
+  };
+
+  const getCurrentDate = () => {
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+    const currentDate = new Date().toLocaleDateString("en-US", options);
+    return currentDate;
+  };
+
+  const toggleTemperatureUnit = () => {
+    setIsCelsius((prevState) => !prevState);
+  };
+
+  const convertToCelsius = (temperature) => {
+    return Math.round((temperature - 32) * (5 / 9));
+  };
+
+  const convertToFahrenheit = (temperature) => {
+    return Math.round((temperature * 9) / 5 + 32);
+  };
+
+  const renderTemperature = (temperature) => {
+    if (isCelsius) {
+      return Math.round(temperature);
+    } else {
+      return convertToFahrenheit(temperature);
+    }
+  };
 
   return (
     <div>
