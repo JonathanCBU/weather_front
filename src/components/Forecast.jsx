@@ -7,7 +7,6 @@ import rain from "../assets/rain.png";
 import snow from "../assets/snow.png";
 import wind from "../assets/wind.png";
 import humidity from "../assets/humidity.png";
-import { render } from "react-dom";
 
 const Forecast = ({ weather }) => {
   const data = { weather };
@@ -22,6 +21,8 @@ const Forecast = ({ weather }) => {
     "02n": cloud,
     "03d": cloud,
     "03n": cloud,
+    "50n": cloud,
+    "50d": cloud,
     "04d": drizzle,
     "04n": drizzle,
     "09d": rain,
@@ -36,14 +37,6 @@ const Forecast = ({ weather }) => {
     const url = `http://127.0.0.1:8080/weather/${data.name}`;
     setLocation(weather.data.location);
     setForecast(weather.data.forecast);
-    console.log("From Forecast");
-    console.log(data);
-    console.log("forecast");
-    console.log(forecast);
-    console.log("location");
-    console.log(location);
-    console.log("daily");
-    console.log(forecast.daily[0]);
   };
 
   useEffect(() => {
@@ -105,10 +98,6 @@ const Forecast = ({ weather }) => {
               <img src={icon_codes[forecast.current.weather[0].icon]}></img>
               <p>{forecast.current.weather[0].description}</p>
               <div className="Temp">
-                {console.log(
-                  "RENDER TEMP BASED ON UNITS",
-                  forecast.current.temp
-                )}
                 {renderTemperature(forecast.current.temp)}
                 <button onClick={toggleTemperatureUnit}>
                   {isMetric ? "°C" : "°F"} | {isMetric ? "°F" : "°C"}
@@ -126,18 +115,20 @@ const Forecast = ({ weather }) => {
               </div>
             </div>
             <div className="Future">
-              <div className="forecast-container">
-                {forecast.daily.slice(0, 5).map((day) => (
-                  <div className="day" key={day.dt}>
-                    <p>{formatDay(day.dt)}</p>
-                    <img src={icon_codes[day.weather[0].icon]}></img>
-                    <p>
-                      H:{" "}{renderTemperature(day.temp.max)} L:{" "}
-                      {renderTemperature(day.temp.min)}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <table className="forecast-container">
+                <tr className="forecast-row">
+                  {forecast.daily.slice(1, 6).map((day) => (
+                    <td className="day" key={day.dt}>
+                      <p>{formatDay(day.dt)}</p>
+                      <img src={icon_codes[day.weather[0].icon]}></img>
+                      <p>
+                        H: {renderTemperature(day.temp.max)} L:{" "}
+                        {renderTemperature(day.temp.min)}
+                      </p>
+                    </td>
+                  ))}
+                </tr>
+              </table>
             </div>
           </div>
         </div>

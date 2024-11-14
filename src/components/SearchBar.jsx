@@ -1,5 +1,5 @@
 import React from "react";
-import "./style/SearchBar.css"
+import "./style/SearchBar.css";
 
 const SearchBar = ({ query, setQuery, search }) => {
   const handleKeyPress = (event) => {
@@ -15,7 +15,7 @@ const SearchBar = ({ query, setQuery, search }) => {
         placeholder="city name or zip"
         name="query"
         value={query}
-        onChange={(event) => setQuery(event.target.value)}
+        onChange={(event) => setQuery(event.target.value)} // TODO: add suggestion after x characters
         onKeyDown={handleKeyPress}
       />
     </div>

@@ -66,9 +66,15 @@
 .forcast-container {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   margin-top: 20px;
   color: #1e2432;
+  width: 100%;
+  /* vertical-align: middle; */
+
+}
+
+.forcast-row {
+    vertical-align: auto;
 }
 
 .day {
@@ -81,7 +87,7 @@
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-    width: 30%;
+    width: 100%;
 }
 
 .day:hover {

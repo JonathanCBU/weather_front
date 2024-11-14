@@ -13,22 +13,14 @@ const App = () => {
 
   const search = async (event) => {
     event.preventDefault();
-    if (
-      event.type === "click" ||
-      (event.type === "keydown" && event.key === "Enter")
-    ) {
-      setWeather({ ...weather, loading: true });
-      const url = `http://127.0.0.1:8080/weather/${query}`;
+    setWeather({ ...weather, loading: true });
+    const url = `http://127.0.0.1:8080/weather/${query}`;
 
-      try {
-        const response = await axios.get(url);
-        console.log("From App");
-        console.log(response.data);
-        setWeather({ data: response.data, loading: false, error: false });
-      } catch (error) {
-        setWeather({ ...weather, data: {}, loading: false, error: true });
-        console.log("error", error);
-      }
+    try {
+      const response = await axios.get(url);
+      setWeather({ data: response.data, loading: false, error: false });
+    } catch (error) {
+      setWeather({ ...weather, data: {}, loading: false, error: true });
     }
   };
 
@@ -40,7 +32,6 @@ const App = () => {
         <>
           <br />
           <br />
-          <h4>Searching...</h4>
         </>
       )}
 
