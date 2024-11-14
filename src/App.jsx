@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import SearchBar from "./components/SearchBar"
+import SearchBar from "./components/SearchBar";
 import Forecast from "./components/Forecast";
 
 const App = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("New York");
   const [weather, setWeather] = useState({
     loading: true,
     data: {},
@@ -23,6 +23,7 @@ const App = () => {
 
       try {
         const response = await axios.get(url);
+        console.log("From App");
         console.log(response.data);
         setWeather({ data: response.data, loading: false, error: false });
       } catch (error) {
@@ -54,9 +55,7 @@ const App = () => {
         </>
       )}
 
-      {weather && weather.data && weather.data.condition && (
-        <Forecast weather={weather} />
-      )}
+      {weather && weather.data && <Forecast weather={weather} />}
     </div>
   );
 };

@@ -1,0 +1,7 @@
+.Forecast {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color: red; 
+}
+
