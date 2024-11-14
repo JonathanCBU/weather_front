@@ -7,6 +7,7 @@ import rain from "../assets/rain.png";
 import snow from "../assets/snow.png";
 import wind from "../assets/wind.png";
 import humidity from "../assets/humidity.png";
+import { render } from "react-dom";
 
 const Forecast = ({ weather }) => {
   const data = { weather };
@@ -67,7 +68,7 @@ const Forecast = ({ weather }) => {
   };
 
   const toggleTemperatureUnit = () => {
-    setIsCelsius((prevState) => !prevState);
+    setIsMetric((prevState) => !prevState);
   };
 
   const convertToCelsius = (temperature) => {
@@ -79,7 +80,7 @@ const Forecast = ({ weather }) => {
   };
 
   const renderTemperature = (temperature) => {
-    if (isCelsius) {
+    if (isMetric) {
       return Math.round(temperature);
     } else {
       return convertToFahrenheit(temperature);
@@ -93,12 +94,12 @@ const Forecast = ({ weather }) => {
           <div className="Today">
             <div className="Location">
               <h2>
-                {location.name},<span>{location.state},</span>
+                {location.name}, <span>{location.state}, </span>
                 <span>{location.country}</span>
               </h2>
             </div>
             <div className="Date">
-              <span>{console.log("GET DATE", forecast.current.dt)}</span>
+              <h3>{getCurrentDate()}</h3>
             </div>
             <div className="Weather-today">
               <img src={icon_codes[forecast.current.weather[0].icon]}></img>
@@ -108,30 +109,31 @@ const Forecast = ({ weather }) => {
                   "RENDER TEMP BASED ON UNITS",
                   forecast.current.temp
                 )}
-                <button onClick={console.log("TOGGLE TEMPS", isMetric)}>
-                  {isMetric ? "°C" : "°F"}
+                {renderTemperature(forecast.current.temp)}
+                <button onClick={toggleTemperatureUnit}>
+                  {isMetric ? "°C" : "°F"} | {isMetric ? "°F" : "°C"}
                 </button>
               </div>
               <div className="Air">
                 <div className="air-col">
                   <img src={wind}></img>
-                  <p>{forecast.current.wind_speed}kph</p>
+                  <p>Wind Speed: {forecast.current.wind_speed}kph</p>
                 </div>
                 <div className="air-col">
                   <img src={humidity}></img>
-                  <p>{forecast.current.humidity}%</p>
+                  <p>Humidity: {forecast.current.humidity}%</p>
                 </div>
               </div>
             </div>
             <div className="Future">
-              <h3>The Next 5 Days:</h3>
               <div className="forecast-container">
                 {forecast.daily.slice(0, 5).map((day) => (
                   <div className="day" key={day.dt}>
-                    <p>{day.dt}</p>
+                    <p>{formatDay(day.dt)}</p>
                     <img src={icon_codes[day.weather[0].icon]}></img>
                     <p>
-                      H: {day.temp.max}°C L: {day.temp.min}°C
+                      H:{" "}{renderTemperature(day.temp.max)} L:{" "}
+                      {renderTemperature(day.temp.min)}
                     </p>
                   </div>
                 ))}

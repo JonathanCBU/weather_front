@@ -9,6 +9,8 @@
   min-height: 100vh;
   display: grid;
   background: #e2d4ff;
+  padding: 20px 15px;
+  text-align: center;
 }
 
 .error-message {

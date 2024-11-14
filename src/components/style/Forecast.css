@@ -1,5 +1,5 @@
 .Forecast {
-    display: flex;
+    display: block;
     align-items: center;
 }
 
@@ -48,27 +48,32 @@
 
 .air-col {
     display: flex;
-    align-items: center;
-    text-align: start;
+    flex-direction: row;
     line-height: 1px;
+    background-color:#333b68;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
 }
 
 .air-col p {
     margin-left:  5px;
+    color: #fff;
 }
 
-.Future {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    color: #1e2432;
+.forcast-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  color: #1e2432;
 }
 
 .day {
-    flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align: center;
     padding: 10px;
@@ -76,6 +81,7 @@
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+    width: 30%;
 }
 
 .day:hover {
@@ -85,4 +91,8 @@
 .day p {
     margin-top: 5px;
     font-weight: 300;
+}
+
+.day img {
+    width: 50px;
 }

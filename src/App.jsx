@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import Forecast from "./components/Forecast";
 
