@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import Forecast from "./components/Forecast";
 
@@ -23,6 +23,45 @@ const App = () => {
       setWeather({ ...weather, data: {}, loading: false, error: true });
     }
   };
+
+  useEffect(() => {
+    const defaultLoad = async () => {
+      setWeather({ ...weather, loading: true });
+      const url = `http://127.0.0.1:8080/weather/London`;
+
+      try {
+        const response = await axios.get(url);
+        setWeather({ data: response.data, loading: false, error: false });
+      } catch (error) {
+        setWeather({ ...weather, data: {}, loading: false, error: true });
+      }
+    };
+
+    const positionLoad = async (coordinates) => {
+      setWeather({ ...weather, loading: true });
+      const url = `http://127.0.0.1:8080/coordinates?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`;
+
+      try {
+        const response = await axios.get(url);
+        setWeather({ data: response.data, loading: false, error: false });
+      } catch (error) {
+        setWeather({ ...weather, data: {}, loading: false, error: true });
+      }
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          positionLoad(position);
+        },
+        () => {
+          console.log("Could not get location");
+        }
+      );
+    } else {
+      defaultLoad();
+    }
+  }, []);
 
   return (
     <div className="app">

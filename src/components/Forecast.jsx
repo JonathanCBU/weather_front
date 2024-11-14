@@ -64,10 +64,6 @@ const Forecast = ({ weather }) => {
     setIsMetric((prevState) => !prevState);
   };
 
-  const convertToCelsius = (temperature) => {
-    return Math.round((temperature - 32) * (5 / 9));
-  };
-
   const convertToFahrenheit = (temperature) => {
     return Math.round((temperature * 9) / 5 + 32);
   };
@@ -87,7 +83,8 @@ const Forecast = ({ weather }) => {
           <div className="Today">
             <div className="Location">
               <h2>
-                {location.name}, <span>{location.state}, </span>
+                {location.name},{" "}
+                {location.state ? <span>{location.state}, </span> : null}
                 <span>{location.country}</span>
               </h2>
             </div>
