@@ -56,6 +56,7 @@ const App = () => {
         },
         () => {
           console.log("Could not get location");
+          setWeather({ ...weather, error: true });
         }
       );
     } else {
