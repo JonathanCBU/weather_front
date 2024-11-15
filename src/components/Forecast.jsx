@@ -34,7 +34,6 @@ const Forecast = ({ weather }) => {
   };
 
   const updateForecast = async () => {
-    const url = `http://127.0.0.1:8080/weather/${data.name}`;
     setLocation(weather.data.location);
     setForecast(weather.data.forecast);
   };
@@ -44,7 +43,7 @@ const Forecast = ({ weather }) => {
   }, [data]);
 
   const formatDay = (dateString) => {
-    const options = { weekday: "short" };
+    const options = { weekday: "short",  day: "numeric", month: "numeric"};
     const date = new Date(dateString * 1000);
     return date.toLocaleDateString("en-US", options);
   };
