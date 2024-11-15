@@ -43,7 +43,7 @@ const Forecast = ({ weather }) => {
   }, [data]);
 
   const formatDay = (dateString) => {
-    const options = { weekday: "short",  day: "numeric", month: "numeric"};
+    const options = { weekday: "short", day: "numeric", month: "numeric" };
     const date = new Date(dateString * 1000);
     return date.toLocaleDateString("en-US", options);
   };
@@ -111,20 +111,18 @@ const Forecast = ({ weather }) => {
               </div>
             </div>
             <div className="Future">
-              <table className="forecast-container">
-                <tr className="forecast-row">
-                  {forecast.daily.slice(1, 6).map((day) => (
-                    <td className="day" key={day.dt}>
-                      <p>{formatDay(day.dt)}</p>
-                      <img src={icon_codes[day.weather[0].icon]}></img>
-                      <p>
-                        H: {renderTemperature(day.temp.max)} L:{" "}
-                        {renderTemperature(day.temp.min)}
-                      </p>
-                    </td>
-                  ))}
-                </tr>
-              </table>
+              <div className="forecast-container">
+                {forecast.daily.slice(1, 6).map((day) => (
+                  <div className="day" key={day.dt}>
+                    <p>{formatDay(day.dt)}</p>
+                    <img src={icon_codes[day.weather[0].icon]}></img>
+                    <p>
+                      H: {renderTemperature(day.temp.max)} L:{" "}
+                      {renderTemperature(day.temp.min)}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
