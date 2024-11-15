@@ -14,7 +14,7 @@ const App = () => {
   const search = async (event) => {
     event.preventDefault();
     setWeather({ ...weather, loading: true });
-    const url = `http://127.0.0.1:8080/weather/${query}`;
+    const url = `http://127.0.0.1:8080/weather?loc=${query}`;
 
     try {
       const response = await axios.get(url);
@@ -27,7 +27,7 @@ const App = () => {
   useEffect(() => {
     const defaultLoad = async () => {
       setWeather({ ...weather, loading: true });
-      const url = `http://127.0.0.1:8080/weather/London`;
+      const url = `http://127.0.0.1:8080/weather?loc=London`;
 
       try {
         const response = await axios.get(url);
