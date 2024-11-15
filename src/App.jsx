@@ -78,9 +78,9 @@ const App = () => {
         <>
           <br />
           <br />
-          <alert className="error-message">
+          <span className="error-message">
             Sorry, no result found. Please Try again
-          </alert>
+          </span>
         </>
       )}
 
