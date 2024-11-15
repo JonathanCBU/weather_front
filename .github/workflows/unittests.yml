@@ -2,8 +2,10 @@ name: On Push
 on: push
 
 jobs:
-  tox:
-    environment: Testing
+  jest:
+    defaults:
+        run:
+            working-directory: ./weather_front
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
