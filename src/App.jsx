@@ -90,3 +90,9 @@ const App = () => {
   );
 };
 export default App;
+
+/*
+
+Do data validation on the frontend
+
+*/
