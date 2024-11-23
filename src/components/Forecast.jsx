@@ -1,21 +1,41 @@
+import Grid2 from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 
-const Forecast = ({ weather }) => {
-  const data = { weather };
-  const [forecast, setForecast] = useState(weather.data.forecast);
-  const [isMetric, setIsMetric] = useState(true);
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
+  }),
+}));
 
-
+const Forecast = ({ days }) => {
+  /*
+  Inputs:
+    days = [{
+      icon: str (path to weather indicator file)
+      temp_high_c: float
+      temp_low_c: float
+      date: int
+    },]
+      isMetricIn: bool
+  */
+  const [forecast, setForecast] = useState(days);
 
   const updateForecast = async () => {
-    setLocation(weather.data.location);
-    setForecast(weather.data.forecast);
+    setForecast(days);
   };
 
   useEffect(() => {
     updateForecast();
-  }, [data]);
+  }, [days]);
 
   const formatDay = (dateString) => {
     const options = { weekday: "short", day: "numeric", month: "numeric" };
@@ -23,43 +43,27 @@ const Forecast = ({ weather }) => {
     return date.toLocaleDateString("en-US", options);
   };
 
-  const toggleTemperatureUnit = () => {
-    setIsMetric((prevState) => !prevState);
-  };
-
-  const convertToFahrenheit = (temperature) => {
-    return Math.round((temperature * 9) / 5 + 32);
-  };
-
-  const renderTemperature = (temperature) => {
-    if (isMetric) {
-      return Math.round(temperature);
-    } else {
-      return convertToFahrenheit(temperature);
-    }
-  };
-
   return (
-    <div>
-      {forecast ? (
-        <div className="Forecast">
-          <div className="Future">
-            <div className="forecast-container">
-              {forecast.daily.slice(1, 6).map((day) => (
-                <div className="day" key={day.dt}>
-                  <p>{formatDay(day.dt)}</p>
-                  <img src={icon_codes[day.weather[0].icon]}></img>
-                  <p>
-                    H: {renderTemperature(day.temp.max)} L:{" "}
-                    {renderTemperature(day.temp.min)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
-    </div>
+    <Box sx={{ width: "100%" }}>
+      <Grid2
+        container
+        spacing={3}
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: "40vh" }}
+      >
+        {forecast.map((day) => (
+          <Item>
+            <Typography variant="h6">{formatDay(day.date)}</Typography>
+            <img src={day.icon}></img>
+            <Typography variant="h8">
+              High: {day.temp_high_c}, Low: {day.temp_low_c}
+            </Typography>
+          </Item>
+        ))}
+      </Grid2>
+    </Box>
   );
 };
 

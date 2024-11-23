@@ -13,6 +13,7 @@ import cloud from "./assets/cloud.png";
 import drizzle from "./assets/drizzle.png";
 import rain from "./assets/rain.png";
 import snow from "./assets/snow.png";
+import Forecast from "./components/Forecast";
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -56,14 +57,42 @@ const App = () => {
     country: "US",
   };
 
+  const dummyForecast = [
+    {
+      icon: icon_codes["01d"],
+      temp_high_c: 45.01,
+      temp_low_c: 12.32,
+      date: 1732405366,
+    },
+    {
+      icon: icon_codes["09d"],
+      temp_high_c: 40.01,
+      temp_low_c: 200.333,
+      date: 1732491765,
+    },
+  ];
+
   const toggleIsMetric = (unit) => {
     console.log(unit);
     if (unit === "deg_c" && !isMetric) {
       setIsMetric(true);
     } else if (unit === "deg_f" && isMetric) {
-      setIsMetric(true);
+      setIsMetric(false);
     } else {
       setIsMetric(true);
+    }
+    console.log(isMetric);
+  };
+
+  const convertToFahrenheit = (temperature) => {
+    return Math.round((temperature * 9) / 5 + 32);
+  };
+
+  const renderTemperature = (temperature) => {
+    if (isMetric) {
+      return Math.round(temperature);
+    } else {
+      return convertToFahrenheit(temperature);
     }
   };
 
@@ -121,7 +150,6 @@ const App = () => {
     <Container>
       <CssBaseline />
       <SearchBar query={query} setQuery={setQuery} search={search} />
-      <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
       {/* {weather.loading && (
         <>
           <br />
@@ -133,12 +161,14 @@ const App = () => {
 
       {weather && weather.data && (
         <Box>
+          <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
           <Today
             weatherIn={dummyWeather}
             locationIn={dummyLocation}
-            isMetricIn={true}
+            isMetricIn={isMetric}
           />
           {/* <Forecast weather={weather} /> */}
+          <Forecast days={dummyForecast} />
         </Box>
       )}
     </Container>
