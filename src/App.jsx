@@ -1,7 +1,18 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
-import Forecast from "./components/Forecast";
+import AlertDialog from "./components/AlertDialog";
+import { Container } from "@mui/material";
+import Today from "./components/Today";
+import { Box } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import UnitSelection from "./components/UnitSelection";
+
+import clear from "./assets/clear.png";
+import cloud from "./assets/cloud.png";
+import drizzle from "./assets/drizzle.png";
+import rain from "./assets/rain.png";
+import snow from "./assets/snow.png";
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -10,6 +21,51 @@ const App = () => {
     data: {},
     error: false,
   });
+  const [isMetric, setIsMetric] = useState(true);
+
+  const icon_codes = {
+    "01d": clear,
+    "01n": clear,
+    "02d": cloud,
+    "02n": cloud,
+    "03d": cloud,
+    "03n": cloud,
+    "50n": cloud,
+    "50d": cloud,
+    "04d": drizzle,
+    "04n": drizzle,
+    "09d": rain,
+    "09n": rain,
+    "10d": rain,
+    "10n": rain,
+    "13d": snow,
+    "13n": snow,
+  };
+
+  const dummyWeather = {
+    icon: icon_codes["01d"],
+    description: "this is a description",
+    temp_c: 30.17,
+    wind_kph: 2.14,
+    humidity_pct: 57,
+  };
+
+  const dummyLocation = {
+    name: "Essex",
+    state: "MA",
+    country: "US",
+  };
+
+  const toggleIsMetric = (unit) => {
+    console.log(unit);
+    if (unit === "deg_c" && !isMetric) {
+      setIsMetric(true);
+    } else if (unit === "deg_f" && isMetric) {
+      setIsMetric(true);
+    } else {
+      setIsMetric(true);
+    }
+  };
 
   const search = async (event) => {
     event.preventDefault();
@@ -25,68 +81,67 @@ const App = () => {
   };
 
   useEffect(() => {
-    const defaultLoad = async () => {
-      setWeather({ ...weather, loading: true });
-      const url = `http://127.0.0.1:8080/weather?loc=London`;
-
-      try {
-        const response = await axios.get(url);
-        setWeather({ data: response.data, loading: false, error: false });
-      } catch (error) {
-        setWeather({ ...weather, data: {}, loading: false, error: true });
-      }
-    };
-
-    const positionLoad = async (coordinates) => {
-      setWeather({ ...weather, loading: true });
-      const url = `http://127.0.0.1:8080/coordinates?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`;
-
-      try {
-        const response = await axios.get(url);
-        setWeather({ data: response.data, loading: false, error: false });
-      } catch (error) {
-        setWeather({ ...weather, data: {}, loading: false, error: true });
-      }
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          positionLoad(position);
-        },
-        () => {
-          console.log("Could not get location");
-          setWeather({ ...weather, error: true });
-        }
-      );
-    } else {
-      defaultLoad();
-    }
+    // const defaultLoad = async () => {
+    //   setWeather({ ...weather, loading: true });
+    //   const url = `http://127.0.0.1:8080/weather?loc=London`;
+    //   try {
+    //     const response = await axios.get(url);
+    //     setWeather({ data: response.data, loading: false, error: false });
+    //   } catch (error) {
+    //     setWeather({ ...weather, data: {}, loading: false, error: true });
+    //   }
+    // };
+    // const positionLoad = async (coordinates) => {
+    //   setWeather({ ...weather, loading: true });
+    //   const url = `http://127.0.0.1:8080/coordinates?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`;
+    //   try {
+    //     const response = await axios.get(url);
+    //     setWeather({ data: response.data, loading: false, error: false });
+    //   } catch (error) {
+    //     setWeather({ ...weather, data: {}, loading: false, error: true });
+    //   }
+    // };
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(
+    //     (position) => {
+    //       positionLoad(position);
+    //     },
+    //     () => {
+    //       console.log("Could not get location");
+    //       setWeather({ ...weather, error: true });
+    //     }
+    //   );
+    // } else {
+    //   defaultLoad();
+    // }
+    // console.log("Loading !!!");
   }, []);
 
   return (
-    <div className="app">
+    <Container>
+      <CssBaseline />
       <SearchBar query={query} setQuery={setQuery} search={search} />
-
-      {weather.loading && (
+      <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
+      {/* {weather.loading && (
         <>
           <br />
           <br />
         </>
-      )}
+      )} */}
 
-      {weather.error && (
-        <>
-          <br />
-          <br />
-          <span className="error-message">
-            Sorry, no result found. Please Try again
-          </span>
-        </>
-      )}
+      {weather.error && <AlertDialog />}
 
-      {weather && weather.data && <Forecast weather={weather} />}
-    </div>
+      {weather && weather.data && (
+        <Box>
+          <Today
+            weatherIn={dummyWeather}
+            locationIn={dummyLocation}
+            isMetricIn={true}
+          />
+          {/* <Forecast weather={weather} /> */}
+        </Box>
+      )}
+    </Container>
   );
 };
 export default App;

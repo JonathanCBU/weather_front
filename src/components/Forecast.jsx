@@ -1,37 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./style/Forecast.css";
-import clear from "../assets/clear.png";
-import cloud from "../assets/cloud.png";
-import drizzle from "../assets/drizzle.png";
-import rain from "../assets/rain.png";
-import snow from "../assets/snow.png";
-import wind from "../assets/wind.png";
-import humidity from "../assets/humidity.png";
+import { Box } from "@mui/material";
 
 const Forecast = ({ weather }) => {
   const data = { weather };
-  const [location, setLocation] = useState(weather.data.location);
   const [forecast, setForecast] = useState(weather.data.forecast);
   const [isMetric, setIsMetric] = useState(true);
 
-  const icon_codes = {
-    "01d": clear,
-    "01n": clear,
-    "02d": cloud,
-    "02n": cloud,
-    "03d": cloud,
-    "03n": cloud,
-    "50n": cloud,
-    "50d": cloud,
-    "04d": drizzle,
-    "04n": drizzle,
-    "09d": rain,
-    "09n": rain,
-    "10d": rain,
-    "10n": rain,
-    "13d": snow,
-    "13n": snow,
-  };
+
 
   const updateForecast = async () => {
     setLocation(weather.data.location);
@@ -46,17 +21,6 @@ const Forecast = ({ weather }) => {
     const options = { weekday: "short", day: "numeric", month: "numeric" };
     const date = new Date(dateString * 1000);
     return date.toLocaleDateString("en-US", options);
-  };
-
-  const getCurrentDate = () => {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    const currentDate = new Date().toLocaleDateString("en-US", options);
-    return currentDate;
   };
 
   const toggleTemperatureUnit = () => {
@@ -79,50 +43,18 @@ const Forecast = ({ weather }) => {
     <div>
       {forecast ? (
         <div className="Forecast">
-          <div className="Today">
-            <div className="Location">
-              <h2>
-                {location.name},{" "}
-                {location.state ? <span>{location.state}, </span> : null}
-                <span>{location.country}</span>
-              </h2>
-            </div>
-            <div className="Date">
-              <h3>{getCurrentDate()}</h3>
-            </div>
-            <div className="Weather-today">
-              <img src={icon_codes[forecast.current.weather[0].icon]}></img>
-              <p>{forecast.current.weather[0].description}</p>
-              <div className="Temp">
-                {renderTemperature(forecast.current.temp)}
-                <button onClick={toggleTemperatureUnit}>
-                  {isMetric ? "°C" : "°F"} | {isMetric ? "°F" : "°C"}
-                </button>
-              </div>
-              <div className="Air">
-                <div className="air-col">
-                  <img src={wind}></img>
-                  <p>Wind Speed: {forecast.current.wind_speed}kph</p>
+          <div className="Future">
+            <div className="forecast-container">
+              {forecast.daily.slice(1, 6).map((day) => (
+                <div className="day" key={day.dt}>
+                  <p>{formatDay(day.dt)}</p>
+                  <img src={icon_codes[day.weather[0].icon]}></img>
+                  <p>
+                    H: {renderTemperature(day.temp.max)} L:{" "}
+                    {renderTemperature(day.temp.min)}
+                  </p>
                 </div>
-                <div className="air-col">
-                  <img src={humidity}></img>
-                  <p>Humidity: {forecast.current.humidity}%</p>
-                </div>
-              </div>
-            </div>
-            <div className="Future">
-              <div className="forecast-container">
-                {forecast.daily.slice(1, 6).map((day) => (
-                  <div className="day" key={day.dt}>
-                    <p>{formatDay(day.dt)}</p>
-                    <img src={icon_codes[day.weather[0].icon]}></img>
-                    <p>
-                      H: {renderTemperature(day.temp.max)} L:{" "}
-                      {renderTemperature(day.temp.min)}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
