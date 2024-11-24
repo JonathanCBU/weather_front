@@ -4,6 +4,7 @@ import SearchBar from "./components/SearchBar";
 import AlertDialog from "./components/AlertDialog";
 import { Container } from "@mui/material";
 import Today from "./components/Today";
+import Grid2 from "@mui/material/Grid2";
 import { Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import UnitSelection from "./components/UnitSelection";
@@ -167,8 +168,20 @@ const App = () => {
             locationIn={dummyLocation}
             isMetricIn={isMetric}
           />
-          {/* <Forecast weather={weather} /> */}
-          <Forecast days={dummyForecast} displayTemp={renderTemperature} />
+          <Box sx={{ width: "100%" }}>
+            <Grid2
+              container
+              spacing={3}
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              sx={{ minHeight: "45vh" }}
+            >
+              {dummyForecast.map((day) => (
+                <Forecast day={day} displayTemp={renderTemperature} />
+              ))}
+            </Grid2>
+          </Box>
         </Box>
       )}
     </Container>

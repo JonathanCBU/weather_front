@@ -6,26 +6,26 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 
-const Forecast = ({ days, displayTemp }) => {
+const Forecast = ({ day, displayTemp }) => {
   /*
   Inputs:
-    days = [{
+    day = {
       icon: str (path to weather indicator file)
       temp_high_c: float
       temp_low_c: float
       date: int
-    },]
+    }
       displayTemp: function
   */
-  const [forecast, setForecast] = useState(days);
+  const [forecast, setForecast] = useState(day);
 
   const updateForecast = async () => {
-    setForecast(days);
+    setForecast(day);
   };
 
   useEffect(() => {
     updateForecast();
-  }, [days]);
+  }, [day]);
 
   const formatDay = (dateString) => {
     const options = { weekday: "short", day: "numeric", month: "numeric" };
@@ -34,29 +34,16 @@ const Forecast = ({ days, displayTemp }) => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Grid2
-        container
-        spacing={3}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: "40vh" }}
-      >
-        {forecast.map((day) => (
           <Card sx={{ width: "20%" }}>
-            <CardMedia component="img" image={day.icon} />
+            <CardMedia component="img" image={forecast.icon} />
             <CardContent>
-              <Typography variant="h6">{formatDay(day.date)}</Typography>
+              <Typography variant="h6">{formatDay(forecast.date)}</Typography>
               <Typography variant="h8">
-                High: {displayTemp(day.temp_high_c)}, Low:{" "}
-                {displayTemp(day.temp_low_c)}
+                High: {displayTemp(forecast.temp_high_c)}, Low:{" "}
+                {displayTemp(forecast.temp_low_c)}
               </Typography>
             </CardContent>
           </Card>
-        ))}
-      </Grid2>
-    </Box>
   );
 };
 
