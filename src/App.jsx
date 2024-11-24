@@ -168,7 +168,7 @@ const App = () => {
             isMetricIn={isMetric}
           />
           {/* <Forecast weather={weather} /> */}
-          <Forecast days={dummyForecast} />
+          <Forecast days={dummyForecast} displayTemp={renderTemperature} />
         </Box>
       )}
     </Container>

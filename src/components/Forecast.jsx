@@ -1,22 +1,12 @@
 import Grid2 from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
-}));
-
-const Forecast = ({ days }) => {
+const Forecast = ({ days, displayTemp }) => {
   /*
   Inputs:
     days = [{
@@ -25,7 +15,7 @@ const Forecast = ({ days }) => {
       temp_low_c: float
       date: int
     },]
-      isMetricIn: bool
+      displayTemp: function
   */
   const [forecast, setForecast] = useState(days);
 
@@ -54,13 +44,16 @@ const Forecast = ({ days }) => {
         sx={{ minHeight: "40vh" }}
       >
         {forecast.map((day) => (
-          <Item>
-            <Typography variant="h6">{formatDay(day.date)}</Typography>
-            <img src={day.icon}></img>
-            <Typography variant="h8">
-              High: {day.temp_high_c}, Low: {day.temp_low_c}
-            </Typography>
-          </Item>
+          <Card sx={{ width: "20%" }}>
+            <CardMedia component="img" image={day.icon} />
+            <CardContent>
+              <Typography variant="h6">{formatDay(day.date)}</Typography>
+              <Typography variant="h8">
+                High: {displayTemp(day.temp_high_c)}, Low:{" "}
+                {displayTemp(day.temp_low_c)}
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
       </Grid2>
     </Box>
