@@ -1,21 +1,31 @@
+import Grid2 from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 
-const Forecast = ({ weather }) => {
-  const data = { weather };
-  const [forecast, setForecast] = useState(weather.data.forecast);
-  const [isMetric, setIsMetric] = useState(true);
-
-
+const Forecast = ({ day, displayTemp }) => {
+  /*
+  Inputs:
+    day = {
+      icon: str (path to weather indicator file)
+      temp_high_c: float
+      temp_low_c: float
+      date: int
+    }
+      displayTemp: function
+  */
+  const [forecast, setForecast] = useState(day);
 
   const updateForecast = async () => {
-    setLocation(weather.data.location);
-    setForecast(weather.data.forecast);
+    setForecast(day);
   };
 
   useEffect(() => {
     updateForecast();
-  }, [data]);
+  }, [day]);
 
   const formatDay = (dateString) => {
     const options = { weekday: "short", day: "numeric", month: "numeric" };
@@ -23,43 +33,17 @@ const Forecast = ({ weather }) => {
     return date.toLocaleDateString("en-US", options);
   };
 
-  const toggleTemperatureUnit = () => {
-    setIsMetric((prevState) => !prevState);
-  };
-
-  const convertToFahrenheit = (temperature) => {
-    return Math.round((temperature * 9) / 5 + 32);
-  };
-
-  const renderTemperature = (temperature) => {
-    if (isMetric) {
-      return Math.round(temperature);
-    } else {
-      return convertToFahrenheit(temperature);
-    }
-  };
-
   return (
-    <div>
-      {forecast ? (
-        <div className="Forecast">
-          <div className="Future">
-            <div className="forecast-container">
-              {forecast.daily.slice(1, 6).map((day) => (
-                <div className="day" key={day.dt}>
-                  <p>{formatDay(day.dt)}</p>
-                  <img src={icon_codes[day.weather[0].icon]}></img>
-                  <p>
-                    H: {renderTemperature(day.temp.max)} L:{" "}
-                    {renderTemperature(day.temp.min)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
-    </div>
+          <Card sx={{ width: "20%" }}>
+            <CardMedia component="img" image={forecast.icon} />
+            <CardContent>
+              <Typography variant="h6">{formatDay(forecast.date)}</Typography>
+              <Typography variant="h8">
+                High: {displayTemp(forecast.temp_high_c)}, Low:{" "}
+                {displayTemp(forecast.temp_low_c)}
+              </Typography>
+            </CardContent>
+          </Card>
   );
 };
 

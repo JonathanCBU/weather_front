@@ -1,6 +1,5 @@
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import React from "react";
 import { useState, useEffect } from "react";
 import AirIcon from "@mui/icons-material/Air";
@@ -72,6 +71,10 @@ const Today = ({ weatherIn, locationIn, isMetricIn }) => {
   useEffect(() => {
     updateDisplayInfo();
   }, [weather, location]);
+
+  useEffect(() => {
+    console.log("Is Metric", isMetricIn);
+  }, [isMetricIn]);
 
   return (
     <Grid2
