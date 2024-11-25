@@ -74,7 +74,6 @@ const App = () => {
   ];
 
   const toggleIsMetric = (unit) => {
-    console.log(unit);
     if (unit === "deg_c" && !isMetric) {
       setIsMetric(true);
     } else if (unit === "deg_f" && isMetric) {
@@ -82,18 +81,13 @@ const App = () => {
     } else {
       setIsMetric(true);
     }
-    console.log(isMetric);
-  };
-
-  const convertToFahrenheit = (temperature) => {
-    return Math.round((temperature * 9) / 5 + 32);
   };
 
   const renderTemperature = (temperature) => {
     if (isMetric) {
       return Math.round(temperature);
     } else {
-      return convertToFahrenheit(temperature);
+      return Math.round((temperature * 9) / 5 + 32);
     }
   };
 
@@ -137,14 +131,12 @@ const App = () => {
     //       positionLoad(position);
     //     },
     //     () => {
-    //       console.log("Could not get location");
     //       setWeather({ ...weather, error: true });
     //     }
     //   );
     // } else {
     //   defaultLoad();
     // }
-    // console.log("Loading !!!");
   }, []);
 
   return (

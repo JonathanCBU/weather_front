@@ -72,10 +72,6 @@ const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp}) => {
     updateDisplayInfo();
   }, [weather, location]);
 
-  useEffect(() => {
-    console.log("Is Metric", isMetricIn);
-  }, [isMetricIn]);
-
   return (
     <Grid2
       container
