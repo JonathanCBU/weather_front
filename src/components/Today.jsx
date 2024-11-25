@@ -43,7 +43,7 @@ const LocaleInfo = ({ name, state, country }) => {
   );
 };
 
-const Today = ({ weatherIn, locationIn, isMetricIn }) => {
+const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp}) => {
   /*
   Inputs:
     weatherIn = {
@@ -96,8 +96,8 @@ const Today = ({ weatherIn, locationIn, isMetricIn }) => {
         {" "}
         <InfoWithIcon
           IconComponent={DeviceThermostatIcon}
-          value={weather.temp_c}
-          unit={"°C"}
+          value={displayTemp(weather.temp_c)}
+          unit={isMetricIn ? "°C" : "°F"}
         />
         <InfoWithIcon
           IconComponent={AirIcon}

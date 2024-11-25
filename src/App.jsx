@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import AlertDialog from "./components/AlertDialog";
-import { Container } from "@mui/material";
+import Container from "@mui/material/Container";
 import Today from "./components/Today";
 import Grid2 from "@mui/material/Grid2";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import UnitSelection from "./components/UnitSelection";
 
@@ -167,6 +167,7 @@ const App = () => {
             weatherIn={dummyWeather}
             locationIn={dummyLocation}
             isMetricIn={isMetric}
+            displayTemp={renderTemperature}
           />
           <Box sx={{ width: "100%" }}>
             <Grid2
