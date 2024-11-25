@@ -48,7 +48,7 @@ const App = () => {
     icon: icon_codes["01d"],
     description: "this is a description",
     temp_c: 30.17,
-    wind_kph: 2.14,
+    wind_mps: 2.14,
     humidity_pct: 57,
   };
 
@@ -85,11 +85,20 @@ const App = () => {
 
   const renderTemperature = (temperature) => {
     if (isMetric) {
-      return Math.round(temperature);
+      return Math.round(temperature*100)/100;
     } else {
-      return Math.round((temperature * 9) / 5 + 32);
+      return Math.round(((temperature * 9) / 5 + 32)*100)/100;
     }
   };
+
+  const renderWindSpeed = (speed) => {
+    let kmh = Math.round((speed * 3600 / 1000)*100)/100;
+    if (isMetric) {
+      return kmh;
+    } else {
+      return Math.round((kmh/0.621)*100)/100;
+    }
+  }
 
   const search = async (event) => {
     event.preventDefault();
@@ -160,6 +169,7 @@ const App = () => {
             locationIn={dummyLocation}
             isMetricIn={isMetric}
             displayTemp={renderTemperature}
+            displayWind={renderWindSpeed}
           />
           <Box sx={{ width: "100%" }}>
             <Grid2

@@ -43,7 +43,7 @@ const LocaleInfo = ({ name, state, country }) => {
   );
 };
 
-const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp}) => {
+const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp, displayWind}) => {
   /*
   Inputs:
     weatherIn = {
@@ -97,8 +97,8 @@ const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp}) => {
         />
         <InfoWithIcon
           IconComponent={AirIcon}
-          value={weather.wind_kph}
-          unit={"kph"}
+          value={displayWind(weather.wind_mps)}
+          unit={isMetricIn ? "kph" : "mph"}
         />
         <InfoWithIcon
           IconComponent={WaterDropIcon}
