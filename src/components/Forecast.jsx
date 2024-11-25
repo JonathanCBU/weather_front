@@ -1,6 +1,4 @@
-import Grid2 from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -35,7 +33,7 @@ const Forecast = ({ day, displayTemp }) => {
 
   return (
           <Card sx={{ width: "20%" }}>
-            <CardMedia component="img" image={forecast.icon} />
+            <CardMedia component="img" image={forecast.icon} sx={{width: "50%", height: "20%"}}/>
             <CardContent>
               <Typography variant="h6">{formatDay(forecast.date)}</Typography>
               <Typography variant="h8">

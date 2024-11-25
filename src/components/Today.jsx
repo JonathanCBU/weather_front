@@ -43,7 +43,7 @@ const LocaleInfo = ({ name, state, country }) => {
   );
 };
 
-const Today = ({ weatherIn, locationIn, isMetricIn }) => {
+const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp, displayWind}) => {
   /*
   Inputs:
     weatherIn = {
@@ -72,10 +72,6 @@ const Today = ({ weatherIn, locationIn, isMetricIn }) => {
     updateDisplayInfo();
   }, [weather, location]);
 
-  useEffect(() => {
-    console.log("Is Metric", isMetricIn);
-  }, [isMetricIn]);
-
   return (
     <Grid2
       container
@@ -96,13 +92,13 @@ const Today = ({ weatherIn, locationIn, isMetricIn }) => {
         {" "}
         <InfoWithIcon
           IconComponent={DeviceThermostatIcon}
-          value={weather.temp_c}
-          unit={"°C"}
+          value={displayTemp(weather.temp_c)}
+          unit={isMetricIn ? "°C" : "°F"}
         />
         <InfoWithIcon
           IconComponent={AirIcon}
-          value={weather.wind_kph}
-          unit={"kph"}
+          value={displayWind(weather.wind_mps)}
+          unit={isMetricIn ? "kph" : "mph"}
         />
         <InfoWithIcon
           IconComponent={WaterDropIcon}

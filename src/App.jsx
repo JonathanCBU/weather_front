@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
 import AlertDialog from "./components/AlertDialog";
-import { Container } from "@mui/material";
+import Container from "@mui/material/Container";
 import Today from "./components/Today";
 import Grid2 from "@mui/material/Grid2";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import UnitSelection from "./components/UnitSelection";
 
@@ -48,7 +48,7 @@ const App = () => {
     icon: icon_codes["01d"],
     description: "this is a description",
     temp_c: 30.17,
-    wind_kph: 2.14,
+    wind_mps: 2.14,
     humidity_pct: 57,
   };
 
@@ -74,7 +74,6 @@ const App = () => {
   ];
 
   const toggleIsMetric = (unit) => {
-    console.log(unit);
     if (unit === "deg_c" && !isMetric) {
       setIsMetric(true);
     } else if (unit === "deg_f" && isMetric) {
@@ -82,20 +81,24 @@ const App = () => {
     } else {
       setIsMetric(true);
     }
-    console.log(isMetric);
-  };
-
-  const convertToFahrenheit = (temperature) => {
-    return Math.round((temperature * 9) / 5 + 32);
   };
 
   const renderTemperature = (temperature) => {
     if (isMetric) {
-      return Math.round(temperature);
+      return Math.round(temperature*100)/100;
     } else {
-      return convertToFahrenheit(temperature);
+      return Math.round(((temperature * 9) / 5 + 32)*100)/100;
     }
   };
+
+  const renderWindSpeed = (speed) => {
+    let kmh = Math.round((speed * 3600 / 1000)*100)/100;
+    if (isMetric) {
+      return kmh;
+    } else {
+      return Math.round((kmh/0.621)*100)/100;
+    }
+  }
 
   const search = async (event) => {
     event.preventDefault();
@@ -137,14 +140,12 @@ const App = () => {
     //       positionLoad(position);
     //     },
     //     () => {
-    //       console.log("Could not get location");
     //       setWeather({ ...weather, error: true });
     //     }
     //   );
     // } else {
     //   defaultLoad();
     // }
-    // console.log("Loading !!!");
   }, []);
 
   return (
@@ -167,6 +168,8 @@ const App = () => {
             weatherIn={dummyWeather}
             locationIn={dummyLocation}
             isMetricIn={isMetric}
+            displayTemp={renderTemperature}
+            displayWind={renderWindSpeed}
           />
           <Box sx={{ width: "100%" }}>
             <Grid2
