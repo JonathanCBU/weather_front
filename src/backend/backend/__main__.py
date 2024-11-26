@@ -6,6 +6,7 @@ from typing import Any, Dict
 import dotenv
 from flask import Flask
 from flask_restful import Api
+from backend.library.resources.weather import Weather
 
 
 def main() -> None:
@@ -33,7 +34,7 @@ def create_api(app: Flask) -> Api:
     api = Api(app)
 
     # api.add_resource here
-
+    api.add_resource(Weather, "/bylocale")
     return api
 
 
