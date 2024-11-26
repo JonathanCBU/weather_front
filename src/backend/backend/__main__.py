@@ -1,7 +1,8 @@
 """main server entry point"""
 
 import argparse
-from typing import Dict, Any
+from typing import Any, Dict
+
 import dotenv
 from flask import Flask
 from flask_restful import Api
