@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Jonathan Cook <jcookbme@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+main = "backend.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask-restful = "^0.3.10"
+flask = "^3.1.0"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
+flask-cors = "^5.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.29.0"
+pytest = "^8.3.3"
+black = "^24.10.0"
+isort = "^5.13.2"
+tox = "^4.23.2"
+flake8 = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+target-version = ["py310"]
+line-length = 79
+color = true
+
+[tool.isort]
+py_version = 310
+line_length = 79
+profile = "black"
+color_output = true
+indent = 4
