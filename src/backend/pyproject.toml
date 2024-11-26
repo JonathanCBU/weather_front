@@ -5,6 +5,9 @@ description = ""
 authors = ["Jonathan Cook <jcookbme@gmail.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+main = "backend.__main__:main"
+
 [tool.poetry.dependencies]
 python = "^3.10"
 flask-restful = "^0.3.10"

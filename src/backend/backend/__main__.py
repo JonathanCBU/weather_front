@@ -1,9 +1,9 @@
 """main server entry point"""
 
 import argparse
-
+from typing import Dict, Any
 import dotenv
-from Flask import Flask
+from flask import Flask
 from flask_restful import Api
 
 
@@ -18,7 +18,7 @@ def main() -> None:
     app.run(debug=args.debug, port=args.port)
 
 
-def create_app() -> Flask:
+def create_app(args: Dict[str, Any]) -> Flask:
     """create app object"""
     app = Flask(__name__)
 
