@@ -8,8 +8,8 @@ from typing import Tuple, Dict, List, Any
 from flask_restful import Resource, reqparse
 
 
-class Weather(Resource):
-    """weather resource"""
+class WeatherByLocale(Resource):
+    """weather resource when using a name or zip to search"""
 
     def __init__(self) -> None:
         super().__init__()

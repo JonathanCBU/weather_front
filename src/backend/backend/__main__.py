@@ -6,7 +6,7 @@ from typing import Any, Dict
 import dotenv
 from flask import Flask
 from flask_restful import Api
-from backend.library.resources.weather import Weather
+from backend.library.resources.weather import WeatherByLocale
 
 
 def main() -> None:
