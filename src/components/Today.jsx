@@ -43,7 +43,14 @@ const LocaleInfo = ({ name, state, country }) => {
   );
 };
 
-const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp, displayWind}) => {
+const Today = ({
+  weatherIn,
+  locationIn,
+  isMetricIn,
+  displayTemp,
+  displayWind,
+  Icon,
+}) => {
   /*
   Inputs:
     weatherIn = {
@@ -86,7 +93,7 @@ const Today = ({ weatherIn, locationIn, isMetricIn,  displayTemp, displayWind}) 
         state={location.state}
         country={location.country}
       />
-      <img src={weather.icon}></img>
+      <img src={Icon}></img>
       <p>{weather.description}</p>
       <Stack direction="row" spacing={5}>
         {" "}

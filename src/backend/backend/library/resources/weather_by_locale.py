@@ -3,7 +3,7 @@
 import requests
 import os
 
-from typing import Tuple, Dict, List, Any
+from typing import Tuple, Dict, Any
 
 from flask_restful import Resource, reqparse
 
@@ -21,7 +21,7 @@ class WeatherByLocale(Resource):
 
         dummy_location = {"name": "Gloucester", "state": "MA", "country": "US"}
         dummy_weather = {
-            "icon": "50d",
+            "icon_code": "50d",
             "description": "it's weather I promise",
             "temp_c": 12.3455555,
             "wind_mps": 3.333333,
@@ -29,13 +29,13 @@ class WeatherByLocale(Resource):
         }
         dummy_forecast = [
             {
-                "icon": "01d",
+                "icon_code": "01d",
                 "temp_high_c": 45.01,
                 "temp_low_c": 12.32,
                 "date": 1732405366,
             },
             {
-                "icon": "09d",
+                "icon_code": "09d",
                 "temp_high_c": 40.01,
                 "temp_low_c": 200.333,
                 "date": 1732491765,

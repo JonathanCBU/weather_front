@@ -6,12 +6,14 @@ from typing import Any, Dict
 import dotenv
 from flask import Flask
 from flask_restful import Api
-from backend.library.resources.weather import WeatherByLocale
-
+from backend.library.resources.weather_by_locale import WeatherByLocale
+from backend.library.resources.weather_by_coordinates import WeatherByCorrdinates
+from flask_cors import CORS
 
 def main() -> None:
     """launch server"""
     dotenv.load_dotenv()
+
 
     args = get_args()
     app = create_app(args)
@@ -26,6 +28,7 @@ def create_app(args: Dict[str, Any]) -> Flask:
 
     # do app.config.from_mapping when I get to the point of mapping new stuff
     # to the backend
+    _ = CORS(app, origins="*")
     return app
 
 
@@ -34,7 +37,8 @@ def create_api(app: Flask) -> Api:
     api = Api(app)
 
     # api.add_resource here
-    api.add_resource(Weather, "/bylocale")
+    api.add_resource(WeatherByLocale, "/bylocale")
+    api.add_resource(WeatherByCorrdinates, "/bycoords")
     return api
 
 

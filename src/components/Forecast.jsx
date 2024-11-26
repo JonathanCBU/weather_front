@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 
-const Forecast = ({ day, displayTemp }) => {
+const Forecast = ({ day, displayTemp, Icon }) => {
   /*
   Inputs:
     day = {
@@ -32,8 +32,8 @@ const Forecast = ({ day, displayTemp }) => {
   };
 
   return (
-          <Card sx={{ width: "20%" }}>
-            <CardMedia component="img" image={forecast.icon} sx={{width: "50%", height: "20%"}}/>
+          <Card sx={{ width: "15%" }}>
+            <CardMedia component="img" image={Icon} sx={{width: "50%", height: "20%"}}/>
             <CardContent>
               <Typography variant="h6">{formatDay(forecast.date)}</Typography>
               <Typography variant="h8">
