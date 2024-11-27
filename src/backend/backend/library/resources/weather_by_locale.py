@@ -5,6 +5,14 @@ import os
 
 from typing import Tuple, Dict, Any
 
+from dataclasses import asdict
+
+from backend.library.default_data import (
+    dummy_forecast_list,
+    dummy_locale,
+    dummy_today,
+)
+
 from flask_restful import Resource, reqparse
 
 
@@ -19,33 +27,16 @@ class WeatherByLocale(Resource):
     def get(self) -> Tuple[Dict[str, Any], int]:
         """return location and weather data"""
 
-        dummy_location = {"name": "Gloucester", "state": "MA", "country": "US"}
-        dummy_weather = {
-            "icon_code": "50d",
-            "description": "it's weather I promise",
-            "temp_c": 12.3455555,
-            "wind_mps": 3.333333,
-            "humidity_pct": 09.17,
-        }
-        dummy_forecast = [
-            {
-                "icon_code": "01d",
-                "temp_high_c": 45.01,
-                "temp_low_c": 12.32,
-                "date": 1732405366,
-            },
-            {
-                "icon_code": "09d",
-                "temp_high_c": 40.01,
-                "temp_low_c": 200.333,
-                "date": 1732491765,
-            },
-        ]
+        today = dummy_today(__name__)
+        forecast = []
+        for fc in dummy_forecast_list():
+            forecast.append(asdict(fc))
+        locale = dummy_locale(__name__)
         return (
             {
-                "today": dummy_weather,
-                "forecast": dummy_forecast,
-                "locale": dummy_location,
+                "today": asdict(today),
+                "forecast": forecast,
+                "locale": asdict(locale),
             },
             200,
         )

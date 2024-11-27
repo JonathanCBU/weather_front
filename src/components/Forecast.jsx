@@ -25,9 +25,9 @@ const Forecast = ({ day, displayTemp, Icon }) => {
     updateForecast();
   }, [day]);
 
-  const formatDay = (dateString) => {
+  const formatDay = (epochDate) => {
     const options = { weekday: "short", day: "numeric", month: "numeric" };
-    const date = new Date(dateString * 1000);
+    const date = new Date(epochDate);
     return date.toLocaleDateString("en-US", options);
   };
 
