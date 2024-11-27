@@ -1,16 +1,17 @@
 """weather end point for Today and Forecast"""
 
-import requests
 import os
 from dataclasses import asdict
-from typing import Tuple, Dict, Any
+from typing import Any, Dict, Tuple
+
+import requests
+from flask_restful import Resource, reqparse
+
 from backend.library.default_data import (
     dummy_forecast_list,
     dummy_locale,
     dummy_today,
 )
-
-from flask_restful import Resource, reqparse
 
 
 class WeatherByCorrdinates(Resource):
@@ -27,16 +28,11 @@ class WeatherByCorrdinates(Resource):
 
         args = self.parser.parse_args()
 
-        for arg in args:
-            print(args[arg])
-
         today = dummy_today(__name__)
         forecast = []
         for fc in dummy_forecast_list():
             forecast.append(asdict(fc))
         locale = dummy_locale(__name__)
-        for fc in forecast:
-            print(forecast)
         return (
             {
                 "today": asdict(today),

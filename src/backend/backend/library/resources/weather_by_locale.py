@@ -1,19 +1,17 @@
 """weather end point for Today and Forecast"""
 
-import requests
 import os
-
-from typing import Tuple, Dict, Any
-
 from dataclasses import asdict
+from typing import Any, Dict, Tuple
+
+import requests
+from flask_restful import Resource, reqparse
 
 from backend.library.default_data import (
     dummy_forecast_list,
     dummy_locale,
     dummy_today,
 )
-
-from flask_restful import Resource, reqparse
 
 
 class WeatherByLocale(Resource):

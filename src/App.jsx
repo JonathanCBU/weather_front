@@ -124,7 +124,16 @@ const App = () => {
   return (
     <Container>
       <CssBaseline />
-      <SearchBar query={query} setQuery={setQuery} search={search} />
+      <Grid2
+        container
+        spacing={3}
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <SearchBar query={query} setQuery={setQuery} search={search} />
+        <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
+      </Grid2>
       {!weather.ready && (
         <>
           <br />
@@ -136,7 +145,6 @@ const App = () => {
 
       {weather.ready && (
         <Box>
-          <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
           <Today
             dummyWeather={weather.data.today}
             weatherIn={weather.data.today}
