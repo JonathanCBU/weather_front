@@ -5,15 +5,18 @@ from typing import Any, Dict
 
 import dotenv
 from flask import Flask
-from flask_restful import Api
-from backend.library.resources.weather_by_locale import WeatherByLocale
-from backend.library.resources.weather_by_coordinates import WeatherByCorrdinates
 from flask_cors import CORS
+from flask_restful import Api
+
+from backend.library.resources.weather_by_coordinates import (
+    WeatherByCorrdinates,
+)
+from backend.library.resources.weather_by_locale import WeatherByLocale
+
 
 def main() -> None:
     """launch server"""
     dotenv.load_dotenv()
-
 
     args = get_args()
     app = create_app(args)

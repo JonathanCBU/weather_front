@@ -1,9 +1,9 @@
 """Default data variables for get requests"""
 
-from dataclasses import dataclass
 import random
-from typing import List
+from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import List
 
 
 @dataclass
@@ -166,7 +166,6 @@ def dummy_forecast_list(
     dt_1 = datetime.fromisoformat(iso_date)
     for i in range(count):
         date = dt_1 + timedelta(days=i)
-        print(date)
         days.append(
             Forecast(
                 icon_code=icon_codes[random.randint(0, len(icon_codes) - 1)],
