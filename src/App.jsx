@@ -19,7 +19,7 @@ import Forecast from "./components/Forecast";
 const App = () => {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({
-    loading: true,
+    ready: false,
     data: {},
     error: false,
   });
@@ -44,35 +44,6 @@ const App = () => {
     "13n": snow,
   };
 
-  const dummyWeather = {
-    icon: icon_codes["01d"],
-    description: "this is a description",
-    temp_c: 30.17,
-    wind_mps: 2.14,
-    humidity_pct: 57,
-  };
-
-  const dummyLocation = {
-    name: "Essex",
-    state: "MA",
-    country: "US",
-  };
-
-  const dummyForecast = [
-    {
-      icon: icon_codes["01d"],
-      temp_high_c: 45.01,
-      temp_low_c: 12.32,
-      date: 1732405366,
-    },
-    {
-      icon: icon_codes["09d"],
-      temp_high_c: 40.01,
-      temp_low_c: 200.333,
-      date: 1732491765,
-    },
-  ];
-
   const toggleIsMetric = (unit) => {
     if (unit === "deg_c" && !isMetric) {
       setIsMetric(true);
@@ -85,88 +56,92 @@ const App = () => {
 
   const renderTemperature = (temperature) => {
     if (isMetric) {
-      return Math.round(temperature*100)/100;
+      return Math.round(temperature * 100) / 100;
     } else {
-      return Math.round(((temperature * 9) / 5 + 32)*100)/100;
+      return Math.round(((temperature * 9) / 5 + 32) * 100) / 100;
     }
   };
 
   const renderWindSpeed = (speed) => {
-    let kmh = Math.round((speed * 3600 / 1000)*100)/100;
+    let kmh = Math.round(((speed * 3600) / 1000) * 100) / 100;
     if (isMetric) {
       return kmh;
     } else {
-      return Math.round((kmh/0.621)*100)/100;
-    }
-  }
-
-  const search = async (event) => {
-    event.preventDefault();
-    setWeather({ ...weather, loading: true });
-    const url = `http://127.0.0.1:8080/weather?loc=${query}`;
-
-    try {
-      const response = await axios.get(url);
-      setWeather({ data: response.data, loading: false, error: false });
-    } catch (error) {
-      setWeather({ ...weather, data: {}, loading: false, error: true });
+      return Math.round((kmh / 0.621) * 100) / 100;
     }
   };
 
+  const search = async (event) => {
+    event.preventDefault();
+    setWeather({ ...weather, ready: false });
+    const url = `http://127.0.0.1:5000/bylocale`;
+
+    try {
+      const response = await axios.get(url);
+      setWeather({ data: response.data, ready: true, error: false });
+    } catch (error) {
+      setWeather({ ...weather, data: {}, ready: false, error: true });
+    }
+    console.log(weather.data);
+  };
+
   useEffect(() => {
-    // const defaultLoad = async () => {
-    //   setWeather({ ...weather, loading: true });
-    //   const url = `http://127.0.0.1:8080/weather?loc=London`;
-    //   try {
-    //     const response = await axios.get(url);
-    //     setWeather({ data: response.data, loading: false, error: false });
-    //   } catch (error) {
-    //     setWeather({ ...weather, data: {}, loading: false, error: true });
-    //   }
-    // };
-    // const positionLoad = async (coordinates) => {
-    //   setWeather({ ...weather, loading: true });
-    //   const url = `http://127.0.0.1:8080/coordinates?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}`;
-    //   try {
-    //     const response = await axios.get(url);
-    //     setWeather({ data: response.data, loading: false, error: false });
-    //   } catch (error) {
-    //     setWeather({ ...weather, data: {}, loading: false, error: true });
-    //   }
-    // };
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       positionLoad(position);
-    //     },
-    //     () => {
-    //       setWeather({ ...weather, error: true });
-    //     }
-    //   );
-    // } else {
-    //   defaultLoad();
-    // }
+    const positionLoad = async (coordinates) => {
+      setWeather({ ...weather, ready: false });
+      const url = "http://127.0.0.1:5000/bycoords";
+      const data = JSON.stringify({
+        lat: 123.456,
+        lon: 10.1,
+      });
+      try {
+        console.log("requesting data");
+        const response = await axios.post(url, data, {
+          headers: { "Content-Type": "application/json" },
+        });
+        setWeather({ data: response.data, ready: true, error: false });
+      } catch (error) {
+        setWeather({ ...weather, data: {}, ready: false, error: true });
+        console.log("Caught error", error);
+      }
+    };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("Position found", position.coords);
+
+          positionLoad(position.coords);
+        },
+        () => {
+          setWeather({ ...weather, error: true });
+        }
+      );
+    } else {
+      setWeather({ ...weather, ready: false });
+    }
+    console.log("Initial weather", weather.data, weather.error, weather.ready);
   }, []);
 
   return (
     <Container>
       <CssBaseline />
       <SearchBar query={query} setQuery={setQuery} search={search} />
-      {/* {weather.loading && (
+      {!weather.ready && (
         <>
           <br />
           <br />
         </>
-      )} */}
+      )}
 
       {weather.error && <AlertDialog />}
 
-      {weather && weather.data && (
+      {weather.ready && (
         <Box>
           <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
           <Today
-            weatherIn={dummyWeather}
-            locationIn={dummyLocation}
+            dummyWeather={weather.data.today}
+            weatherIn={weather.data.today}
+            Icon={icon_codes[weather.data.today.icon_code]}
+            locationIn={weather.data.locale}
             isMetricIn={isMetric}
             displayTemp={renderTemperature}
             displayWind={renderWindSpeed}
@@ -180,8 +155,12 @@ const App = () => {
               justifyContent="center"
               sx={{ minHeight: "45vh" }}
             >
-              {dummyForecast.map((day) => (
-                <Forecast day={day} displayTemp={renderTemperature} />
+              {weather.data.forecast.map((day) => (
+                <Forecast
+                  day={day}
+                  displayTemp={renderTemperature}
+                  Icon={icon_codes[day.icon_code]}
+                />
               ))}
             </Grid2>
           </Box>
