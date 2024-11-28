@@ -9,12 +9,30 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import UnitSelection from "./components/UnitSelection";
 
+import { AppProvider } from "@toolpad/core/AppProvider";
+import { SignInPage } from "@toolpad/core/SignInPage";
+import { useTheme } from "@mui/material/styles";
+
 import clear from "./assets/clear.png";
 import cloud from "./assets/cloud.png";
 import drizzle from "./assets/drizzle.png";
 import rain from "./assets/rain.png";
 import snow from "./assets/snow.png";
 import Forecast from "./components/Forecast";
+
+const providers = [{ id: "credentials", name: "Email and Password" }];
+
+const signIn = async (provider, formData) => {
+  const promise = new Promise((resolve) => {
+    setTimeout(() => {
+      alert(
+        `Signing in with "${provider.name}" and credentials: ${formData.get("email")}, ${formData.get("password")}`
+      );
+      resolve();
+    }, 300);
+  });
+  return promise;
+};
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -121,60 +139,64 @@ const App = () => {
     console.log("Initial weather", weather.data, weather.error, weather.ready);
   }, []);
 
+  const theme = useTheme();
   return (
-    <Container>
-      <CssBaseline />
-      <Grid2
-        container
-        spacing={3}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <SearchBar query={query} setQuery={setQuery} search={search} />
-        <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
-      </Grid2>
-      {!weather.ready && (
-        <>
-          <br />
-          <br />
-        </>
-      )}
+    <AppProvider theme={theme}>
+      <Container>
+        <CssBaseline />
+        <SignInPage signIn={signIn} providers={providers} />
+        <Grid2
+          container
+          spacing={3}
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <SearchBar query={query} setQuery={setQuery} search={search} />
+          <UnitSelection isMetric={isMetric} setIsMetric={toggleIsMetric} />
+        </Grid2>
+        {!weather.ready && (
+          <>
+            <br />
+            <br />
+          </>
+        )}
 
-      {weather.error && <AlertDialog />}
+        {weather.error && <AlertDialog />}
 
-      {weather.ready && (
-        <Box>
-          <Today
-            dummyWeather={weather.data.today}
-            weatherIn={weather.data.today}
-            Icon={icon_codes[weather.data.today.icon_code]}
-            locationIn={weather.data.locale}
-            isMetricIn={isMetric}
-            displayTemp={renderTemperature}
-            displayWind={renderWindSpeed}
-          />
-          <Box sx={{ width: "100%" }}>
-            <Grid2
-              container
-              spacing={3}
-              direction="row"
-              alignItems="center"
-              justifyContent="center"
-              sx={{ minHeight: "45vh" }}
-            >
-              {weather.data.forecast.map((day) => (
-                <Forecast
-                  day={day}
-                  displayTemp={renderTemperature}
-                  Icon={icon_codes[day.icon_code]}
-                />
-              ))}
-            </Grid2>
+        {weather.ready && (
+          <Box>
+            <Today
+              dummyWeather={weather.data.today}
+              weatherIn={weather.data.today}
+              Icon={icon_codes[weather.data.today.icon_code]}
+              locationIn={weather.data.locale}
+              isMetricIn={isMetric}
+              displayTemp={renderTemperature}
+              displayWind={renderWindSpeed}
+            />
+            <Box sx={{ width: "100%" }}>
+              <Grid2
+                container
+                spacing={3}
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                sx={{ minHeight: "45vh" }}
+              >
+                {weather.data.forecast.map((day) => (
+                  <Forecast
+                    day={day}
+                    displayTemp={renderTemperature}
+                    Icon={icon_codes[day.icon_code]}
+                  />
+                ))}
+              </Grid2>
+            </Box>
           </Box>
-        </Box>
-      )}
-    </Container>
+        )}
+      </Container>
+    </AppProvider>
   );
 };
 export default App;
